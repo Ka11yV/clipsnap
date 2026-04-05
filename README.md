@@ -185,3 +185,4 @@ Sources/snapclip/
 - 클립보드에 이미지가 없으면 저장 요청은 상태 메시지와 함께 실패합니다.
 - 저장 폴더가 없으면 앱이 자동으로 생성합니다.
 - 단축키 기록과 전역 단축키 처리는 [`KeyboardShortcuts`](https://github.com/sindresorhus/KeyboardShortcuts)를 사용합니다.
+# clipsnap
