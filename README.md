@@ -1,4 +1,4 @@
-# snapclip
+# clipsnap
 
 [English](#english) | [한국어](#한국어)
 
