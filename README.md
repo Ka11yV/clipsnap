@@ -82,6 +82,7 @@ Sources/snapclip/
 │   ├── Clipboard/
 │   │   └── ClipboardImageService.swift
 │   └── Storage/
+│       ├── DestinationFolderBookmarkStore.swift
 │       └── ImageWriter.swift
 ├── UI/
 │   ├── MenuBarView.swift
@@ -193,6 +194,7 @@ Sources/snapclip/
 │   ├── Clipboard/
 │   │   └── ClipboardImageService.swift
 │   └── Storage/
+│       ├── DestinationFolderBookmarkStore.swift
 │       └── ImageWriter.swift
 ├── UI/
 │   ├── MenuBarView.swift

@@ -80,7 +80,6 @@ final class AppState: ObservableObject {
 
         do {
             try bookmarkStore.save(url: selectedURL)
-            defaults.removeObject(forKey: destinationFolderKey)
             destinationFolderPath = selectedURL.path
             hasDestinationFolderAccess = true
             statusMessage = "Save folder updated with sandbox access."
@@ -92,10 +91,11 @@ final class AppState: ObservableObject {
 
     func openDestinationFolder() {
         do {
-            let folderURL = try bookmarkStore.resolveURL()
-            NSWorkspace.shared.activateFileViewerSelecting([
-                URL(fileURLWithPath: folderURL.path, isDirectory: true)
-            ])
+            _ = try bookmarkStore.withSecurityScopedAccess { folderURL in
+                NSWorkspace.shared.activateFileViewerSelecting([
+                    URL(fileURLWithPath: folderURL.path, isDirectory: true)
+                ])
+            }
         } catch {
             statusMessage = error.localizedDescription
             refreshDestinationFolderAccessStatus()
@@ -106,8 +106,9 @@ final class AppState: ObservableObject {
         guard let lastSavedFilePath else { return }
 
         do {
-            _ = try bookmarkStore.resolveURL()
-            NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: lastSavedFilePath)])
+            _ = try bookmarkStore.withSecurityScopedAccess { _ in
+                NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: lastSavedFilePath)])
+            }
         } catch {
             statusMessage = error.localizedDescription
             refreshDestinationFolderAccessStatus()

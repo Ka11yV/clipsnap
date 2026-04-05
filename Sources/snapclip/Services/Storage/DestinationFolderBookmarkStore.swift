@@ -34,6 +34,7 @@ struct DestinationFolderBookmarkStore {
 
     func clear() {
         defaults.removeObject(forKey: bookmarkKey)
+        defaults.removeObject(forKey: displayPathKey)
     }
 
     func resolveURL() throws -> URL {
