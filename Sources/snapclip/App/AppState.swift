@@ -8,10 +8,18 @@ final class AppState: ObservableObject {
     @Published var lastSavedFilePath: String?
 
     private let defaults: UserDefaults
+    private let clipboardImageService: ClipboardImageService
+    private let imageWriter: ImageWriter
     private let destinationFolderKey = "destinationFolderPath"
 
-    init(defaults: UserDefaults = .standard) {
+    init(
+        defaults: UserDefaults = .standard,
+        clipboardImageService: ClipboardImageService = ClipboardImageService(),
+        imageWriter: ImageWriter = ImageWriter()
+    ) {
         self.defaults = defaults
+        self.clipboardImageService = clipboardImageService
+        self.imageWriter = imageWriter
 
         let initialPath = defaults.string(forKey: destinationFolderKey)
             ?? Self.defaultDestinationFolder.path
@@ -55,7 +63,15 @@ final class AppState: ObservableObject {
     }
 
     func saveClipboardImage() {
-        statusMessage = "Save action will be added next."
+        do {
+            let image = try clipboardImageService.currentImage()
+            let savedFileURL = try imageWriter.savePNG(image, in: destinationFolderURL)
+
+            lastSavedFilePath = savedFileURL.path
+            statusMessage = "Saved \(savedFileURL.lastPathComponent)."
+        } catch {
+            statusMessage = error.localizedDescription
+        }
     }
 
     func quit() {
