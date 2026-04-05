@@ -1,5 +1,10 @@
 import AppKit
 import Foundation
+import KeyboardShortcuts
+
+extension KeyboardShortcuts.Name {
+    static let saveClipboardImage = Self("saveClipboardImage")
+}
 
 @MainActor
 final class AppState: ObservableObject {
@@ -27,6 +32,12 @@ final class AppState: ObservableObject {
         self.destinationFolderPath = initialPath
         self.statusMessage = "Ready to configure destination folder."
         self.lastSavedFilePath = nil
+
+        KeyboardShortcuts.onKeyUp(for: .saveClipboardImage) { [weak self] in
+            Task { @MainActor in
+                self?.saveClipboardImage()
+            }
+        }
     }
 
     var destinationFolderURL: URL {
