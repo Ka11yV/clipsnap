@@ -11,6 +11,9 @@ struct SettingsView: View {
                     .font(.callout)
                     .textSelection(.enabled)
 
+                Text(appState.destinationFolderDescription)
+                    .foregroundStyle(.secondary)
+
                 HStack {
                     Button("Choose Folder") {
                         appState.chooseDestinationFolder()
@@ -19,6 +22,7 @@ struct SettingsView: View {
                     Button("Open Folder") {
                         appState.openDestinationFolder()
                     }
+                    .disabled(!appState.hasDestinationFolderAccess)
                 }
             }
 
@@ -27,6 +31,9 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
 
                 Text("Files will be saved into the selected folder with a timestamped name.")
+                    .foregroundStyle(.secondary)
+
+                Text("Sandboxed builds require you to approve the save folder once so the app can keep secure access.")
                     .foregroundStyle(.secondary)
             }
 

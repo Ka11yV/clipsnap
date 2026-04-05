@@ -18,15 +18,23 @@ struct MenuBarView: View {
             Button("Save Clipboard Image") {
                 appState.saveClipboardImage()
             }
+            .disabled(!appState.hasDestinationFolderAccess)
 
             Button("Open Save Folder") {
                 appState.openDestinationFolder()
             }
+            .disabled(!appState.hasDestinationFolderAccess)
 
-            if appState.lastSavedFilePath != nil {
+            if appState.canRevealLastSavedFile {
                 Button("Reveal Last Saved File") {
                     appState.revealLastSavedFile()
                 }
+            }
+
+            if !appState.hasDestinationFolderAccess {
+                Text("Choose a save folder in Settings before using SnapClip.")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
             }
 
             Divider()
