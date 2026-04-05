@@ -92,9 +92,10 @@ final class AppState: ObservableObject {
 
     func openDestinationFolder() {
         do {
-            _ = try bookmarkStore.withSecurityScopedAccess { folderURL in
-                NSWorkspace.shared.open(folderURL)
-            }
+            let folderURL = try bookmarkStore.resolveURL()
+            NSWorkspace.shared.activateFileViewerSelecting([
+                URL(fileURLWithPath: folderURL.path, isDirectory: true)
+            ])
         } catch {
             statusMessage = error.localizedDescription
             refreshDestinationFolderAccessStatus()
@@ -105,9 +106,8 @@ final class AppState: ObservableObject {
         guard let lastSavedFilePath else { return }
 
         do {
-            _ = try bookmarkStore.withSecurityScopedAccess { _ in
-                NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: lastSavedFilePath)])
-            }
+            _ = try bookmarkStore.resolveURL()
+            NSWorkspace.shared.activateFileViewerSelecting([URL(fileURLWithPath: lastSavedFilePath)])
         } catch {
             statusMessage = error.localizedDescription
             refreshDestinationFolderAccessStatus()
