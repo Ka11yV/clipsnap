@@ -15,7 +15,7 @@ SnapClip is a macOS menu bar utility that saves the current clipboard image into
 
 ### Default behavior
 
-- Default save folder: `~/Pictures/ClipSnap`
+- Default save folder: none in sandboxed builds — choose one in Settings first
 - Default filename format: `snapclip-yyyyMMdd-HHmmss.png`
 - Save format: PNG
 - Default shortcut: none — you set it in Settings
@@ -49,6 +49,8 @@ swift run
 7. The image will be saved into the configured folder.
 
 You can also use the **Save Clipboard Image** action directly from the menu bar window.
+
+Sandboxed builds require the folder selection step before saving. SnapClip stores secure bookmark access for the folder you approve.
 
 ### How to test
 
@@ -90,8 +92,24 @@ Sources/snapclip/
 ### Notes
 
 - If the clipboard does not currently contain an image, the save request fails with a status message.
-- The app creates the destination folder automatically if it does not exist.
+- The app creates the destination folder automatically if it does not exist after you approve that folder in Settings.
 - Shortcut recording and global shortcut handling are powered by [`KeyboardShortcuts`](https://github.com/sindresorhus/KeyboardShortcuts).
+
+### Sandboxed local DMG build
+
+For local testing with sandbox entitlements applied:
+
+```bash
+chmod +x Scripts/sign-app.sh Scripts/package-local-dmg.sh
+Scripts/package-local-dmg.sh
+```
+
+Artifacts are generated in `dist/`:
+
+- `dist/SnapClip.app`
+- `dist/SnapClip-sandbox.dmg`
+
+The included signing flow is for local sandbox testing. Public distribution still needs your real Developer ID signing and notarization process.
 
 ---
 
@@ -108,7 +126,7 @@ SnapClip은 현재 클립보드에 복사된 이미지를 사용자가 선택한
 
 ### 기본 동작
 
-- 기본 저장 폴더: `~/Pictures/ClipSnap`
+- 기본 저장 폴더: sandbox 빌드에서는 없음 — 먼저 Settings에서 폴더를 선택해야 합니다
 - 기본 파일명 형식: `snapclip-yyyyMMdd-HHmmss.png`
 - 저장 포맷: PNG
 - 기본 단축키: 없음 — 설정 화면에서 직접 지정해야 합니다
@@ -142,6 +160,8 @@ swift run
 7. 설정한 폴더에 이미지가 저장됩니다.
 
 메뉴바 창의 **Save Clipboard Image** 버튼으로도 동일하게 저장할 수 있습니다.
+
+sandbox 빌드에서는 먼저 폴더 선택을 해야 저장할 수 있고, SnapClip은 승인된 폴더의 보안 북마크 접근 권한을 저장합니다.
 
 ### 테스트 방법
 
@@ -183,6 +203,21 @@ Sources/snapclip/
 ### 참고 사항
 
 - 클립보드에 이미지가 없으면 저장 요청은 상태 메시지와 함께 실패합니다.
-- 저장 폴더가 없으면 앱이 자동으로 생성합니다.
+- Settings에서 승인한 폴더 아래에서만 저장 폴더를 자동 생성합니다.
 - 단축키 기록과 전역 단축키 처리는 [`KeyboardShortcuts`](https://github.com/sindresorhus/KeyboardShortcuts)를 사용합니다.
-# clipsnap
+
+### sandbox 로컬 DMG 빌드
+
+샌드박스 entitlements를 적용한 로컬 테스트용 DMG를 만들려면:
+
+```bash
+chmod +x Scripts/sign-app.sh Scripts/package-local-dmg.sh
+Scripts/package-local-dmg.sh
+```
+
+결과물은 `dist/`에 생성됩니다.
+
+- `dist/SnapClip.app`
+- `dist/SnapClip-sandbox.dmg`
+
+현재 포함된 서명 흐름은 로컬 sandbox 테스트용입니다. 공개 배포에는 실제 Developer ID 서명과 notarization이 추가로 필요합니다.
