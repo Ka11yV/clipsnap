@@ -1,1 +1,1 @@
-# snapclip
+# clipsnap
