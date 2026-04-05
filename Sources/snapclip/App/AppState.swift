@@ -92,9 +92,7 @@ final class AppState: ObservableObject {
     func openDestinationFolder() {
         do {
             _ = try bookmarkStore.withSecurityScopedAccess { folderURL in
-                NSWorkspace.shared.activateFileViewerSelecting([
-                    URL(fileURLWithPath: folderURL.path, isDirectory: true)
-                ])
+                NSWorkspace.shared.open(folderURL)
             }
         } catch {
             statusMessage = error.localizedDescription

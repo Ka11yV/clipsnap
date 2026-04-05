@@ -12,7 +12,7 @@ struct SnapClipApp: App {
         }
         .menuBarExtraStyle(.window)
 
-        Window("Settings", id: "settings") {
+        Settings {
             SettingsView(appState: appState)
         }
     }
